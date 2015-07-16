@@ -170,26 +170,35 @@ function extractSecondsAndMillisecondsFromDurationString(durationString) {
   return result;
 }
 
-var main = function() {
-  var fs = require('fs');
-  var files = [];
-  files.push({type: 'training', path: './data/import_from_polar/theimdal_15.07.2015_export.xml'});
-  files.push({type: 'gpx', path: './data/import_from_polar/exercise-2015-5-22.gpx'});
-  var jsonData = {};
+spikeApp.factory('polarConverterFactory', function () {
 
-  files.forEach(function(file) {
-    importXmlToJson(file.type, file.path, function(type, json) {
-      jsonData[type] = json;
-    });
+  var Converter = {};
 
-    if(Object.keys(jsonData).length == files.length) {
-      var resultXml = buildTcx(jsonData['training'], jsonData['gpx']);
-      fs.writeFile('./output/tcx.tcx', resultXml.end({ pretty: true, indent: '  ', newline: '\n' }), function(err) {
-        if(err) {
-          return console.log(err);
-        }
-        console.log('File was saved.');
+  Converter.run = function() {
+    var fs = require('fs');
+    var files = [];
+    files.push({type: 'training', path: './data/import_from_polar/theimdal_15.07.2015_export.xml'});
+    files.push({type: 'gpx', path: './data/import_from_polar/exercise-2015-5-22.gpx'});
+    var jsonData = {};
+
+    files.forEach(function(file) {
+      importXmlToJson(file.type, file.path, function(type, json) {
+        jsonData[type] = json;
       });
-    }
-  });
-}();
+
+      if(Object.keys(jsonData).length == files.length) {
+        var resultXml = buildTcx(jsonData['training'], jsonData['gpx']);
+        fs.writeFile('./output/tcx.tcx', resultXml.end({ pretty: true, indent: '  ', newline: '\n' }), function(err) {
+          if(err) {
+            console.log(err);
+            return err;
+          }
+          console.log('File was saved.');
+          return "All ok";
+        });
+      }
+    });
+  }
+
+  return Converter;
+});

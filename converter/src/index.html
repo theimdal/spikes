@@ -2,22 +2,24 @@
 <html data-ng-app="spikeApp">
 
 <head>
-    <title>Movie Stub - Book Movie Tickets Online</title>
+    <title>My spike</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/app.css">
-    <script type="text/javascript" src="js/lib/angular.min.js"></script>
+    <!--<script type="text/javascript" src="js/lib/angular.min.js"></script>-->
+    <script type="text/javascript" src="js/lib/angular.js"></script>
     <script type="text/javascript" src="js/lib/angular-resource.min.js"></script>
     <script type="text/javascript" src="js/lib/angular-route.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/spike.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/service/polarService.js"></script>
     <script type="text/javascript" src="js/service/services.js"></script>
-    <script type="text/javascript" src="js/controller/controllers.js"></script>
+    <!--<script type="text/javascript" src="js/controller/controllers.js"></script>-->
+    <script type="text/javascript" src="js/controller/main_controller.js"></script>
     <script type="text/javascript" src="js/router/routes.js"></script>
 </head>
 
- <body class="container" data-ng-controller="movieStubController">
+<body class="container" data-ng-controller="mainController">
     <div data-ng-include src="headerSrc"></div>
     <div id="container">
         <div data-ng-view=""></div>
