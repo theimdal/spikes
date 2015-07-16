@@ -1,0 +1,23 @@
+{
+  "name": "app_spike",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.html",
+  "window": {
+    "toolbar": true,
+    "resizable": true,
+    "width": 1000,
+    "height": 600,
+    "min_width": 600,
+    "min_height": 400,
+    "max_width": 2560,
+    "max_height": 1440,
+    "position": "center"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies":{
+    "xml2js":"*",
+    "xmlbuilder":"*"
+  }
+}
