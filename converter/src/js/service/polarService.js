@@ -40,9 +40,9 @@ function buildTcx(trainingJson, gpxJson) {
   // DEBUG
 
   var laps = exerciseSummary['laps'][0]['lap'];
+  var totalDistance = 0;
 
   console.log('Number of laps: ' + laps.length);
-  console.log('Lap duration: ' + laps[0].duration);
 
   var builder = require('xmlbuilder');
   var root = builder.create('TrainingCenterDatabase', {version: '1.0', endcoding: 'UTF-8', standalone: true});
@@ -69,6 +69,7 @@ function buildTcx(trainingJson, gpxJson) {
     var nodeLap = nodeActivity.element('Lap', {StartTime: lapStartTime.toISOString()});
     nodeLap.element('TotalTimeSeconds', totalSecondsAndMilliseconds.seconds);
     nodeLap.element('DistanceMeters', lap.distance[0]);
+    totalDistance += parseInt(lap.distance[0]); 
     nodeLap.element('Calories', '0');
 
     var nodeAverageHeartRateBpm = nodeLap.element('AverageHeartRateBpm');
@@ -119,10 +120,25 @@ function buildTcx(trainingJson, gpxJson) {
     lapStartTime = new Date(lapEndTime.getTime());
   }
 
+  console.log(convertMS(lapEndTime.getTime()-startTime.getTime()));//-lapStartTime.getTime()); //-lapStartTime.getMilliseconds()));
+  console.log('Total distance: ' + totalDistance);
+    
   // debug
-  console.log('finished buidling');
+  console.log('finished building');
   // console.log(root.end({ pretty: true, indent: '  ', newline: '\n' }));
   return root;
+};
+
+function convertMS(ms) {
+  var d, h, m, s;
+  s = Math.floor(ms / 1000);
+  m = Math.floor(s / 60);
+  s = s % 60;
+  h = Math.floor(m / 60);
+  m = m % 60;
+  d = Math.floor(h / 24);
+  h = h % 24;
+  return { d: d, h: h, m: m, s: s };
 };
 
 function extractTrackPoints(startTime, endTime, gpxJson) {
@@ -152,9 +168,15 @@ function extractSecondsAndMillisecondsFromDurationString(durationString) {
   var hours = parts[0];
   var minutes = parts[1];
 
-  var secondsAndMilliseconds = parts[2].split('.');
-  var seconds = secondsAndMilliseconds[0];
-  var milliseconds = secondsAndMilliseconds[1];
+  if(parts[2]) {
+    var secondsAndMilliseconds = parts[2].split('.');
+    var seconds = secondsAndMilliseconds[0];
+    var milliseconds = secondsAndMilliseconds[1];
+  } else {
+    var seconds = 0;
+    var milliseconds = 0;
+  }
+  
 
   if (hours) { totalSeconds += parseInt(hours)*3600; }
   if (minutes) { totalSeconds += parseInt(minutes)*60; }
@@ -170,15 +192,15 @@ function extractSecondsAndMillisecondsFromDurationString(durationString) {
   return result;
 }
 
-spikeApp.factory('polarConverterFactory', function () {
+spikeApp.factory('polarToolsFactory', function () {
 
-  var Converter = {};
+  var polarTools = {};
+  var fs = require('fs');
 
-  Converter.run = function() {
-    var fs = require('fs');
+  polarTools.convert = function() {
     var files = [];
-    files.push({type: 'training', path: './data/import_from_polar/theimdal_15.07.2015_export.xml'});
-    files.push({type: 'gpx', path: './data/import_from_polar/exercise-2015-5-22.gpx'});
+    files.push({type: 'training', path: './data/import_from_polar/theimdal_21.07.2015_export.xml'});
+    files.push({type: 'gpx', path: './data/import_from_polar/exercise-2015-7-20.gpx'});
     var jsonData = {};
 
     files.forEach(function(file) {
@@ -199,6 +221,10 @@ spikeApp.factory('polarConverterFactory', function () {
       }
     });
   }
+  
+  polarTools.getFilesToBeConverted = function () {
+    
+  }
 
-  return Converter;
+  return polarTools;
 });
