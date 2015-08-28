@@ -1,0 +1,1 @@
+polarToolsApp = angular.module('polarToolsApp', ['ngResource', 'ngRoute', 'chart.js']);

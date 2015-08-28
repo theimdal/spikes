@@ -1,27 +1,39 @@
 <!DOCTYPE html>
-<html data-ng-app="spikeApp">
+<html data-ng-app="polarToolsApp">
 
 <head>
-    <title>My spike</title>
+    <title>Polar Tools</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/app.css">
-    <!--<script type="text/javascript" src="js/lib/angular.min.js"></script>-->
-    <script type="text/javascript" src="js/lib/angular.js"></script>
-    <script type="text/javascript" src="js/lib/angular-resource.min.js"></script>
-    <script type="text/javascript" src="js/lib/angular-route.min.js"></script>
-    <script type="text/javascript" src="js/lib/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/service/polarService.js"></script>
-    <script type="text/javascript" src="js/controller/main_controller.js"></script>
-    <script type="text/javascript" src="js/router/routes.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/angular-chart.css">
+
 </head>
 
 <body class="container" data-ng-controller="mainController">
+
+    <!-- 3rd party Dependencies -->
+    <!--<script type="text/javascript" src="js/lib/angular.min.js"></script>-->
+    <script type="text/javascript" src="vendor/angular.js"></script>
+    <script type="text/javascript" src="vendor/angular-resource.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-route.min.js"></script>
+    <script type="text/javascript" src="vendor/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="vendor/bootstrap.min.js"></script>
+    <script type="text/javascript" src="vendor/chart.js"></script>
+    <script type="text/javascript" src="vendor/angular-chart.js"></script>
+
+    <!-- Application javascript -->
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+    <script type="text/javascript" src="routes.js"></script>
+    <script type="text/javascript" src="js/service/polarService.js"></script>
+    <script type="text/javascript" src="js/controller/main_controller.js"></script>
+    <script type="text/javascript" src="js/controller/mssql_controller.js"></script>
+
     <div data-ng-include src="headerSrc"></div>
     <div id="container">
         <div data-ng-view=""></div>
     </div>
+
 </body>
 
 </html>

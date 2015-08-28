@@ -1,0 +1,1 @@
+polarToolsApp.constant('POLAR_EXPORT_FOLDER', 'data/polar_export_folder');

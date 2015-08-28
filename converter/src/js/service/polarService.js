@@ -192,39 +192,74 @@ function extractSecondsAndMillisecondsFromDurationString(durationString) {
   return result;
 }
 
-spikeApp.factory('polarToolsFactory', function () {
+function findCorrespondingGpxFile(files, basename) {
+  var path = require('path');
 
-  var polarTools = {};
+  for (var i = 0; i < files.length; i++) {
+    if ((path.extname(files[i]) === '.gpx') && (path.basename(files[i]) === basename)) {
+      return files[i];
+    }
+  }
+}
+
+polarToolsApp.factory('polarToolsFactory', function (POLAR_EXPORT_FOLDER) {
+
   var fs = require('fs');
+  var path = require('path');
 
-  polarTools.convert = function() {
-    var files = [];
-    files.push({type: 'training', path: './data/import_from_polar/theimdal_21.07.2015_export.xml'});
-    files.push({type: 'gpx', path: './data/import_from_polar/exercise-2015-7-20.gpx'});
-    var jsonData = {};
+  return {
 
-    files.forEach(function(file) {
-      importXmlToJson(file.type, file.path, function(type, json) {
-        jsonData[type] = json;
-      });
+    convert : function() {
+      var files = [];
+      files.push({type: 'training', path: './data/import_from_polar/theimdal_21.07.2015_export.xml'});
+      files.push({type: 'gpx', path: './data/import_from_polar/exercise-2015-7-20.gpx'});
+      var jsonData = {};
 
-      if(Object.keys(jsonData).length == files.length) {
-        var resultXml = buildTcx(jsonData['training'], jsonData['gpx']);
-        fs.writeFile('./output/tcx.tcx', resultXml.end({ pretty: true, indent: '  ', newline: '\n' }), function(err) {
-          if(err) {
-            console.log(err);
-            return err;
-          }
-          console.log('File was saved.');
-          return "All ok";
+      files.forEach(function(file) {
+        importXmlToJson(file.type, file.path, function(type, json) {
+          jsonData[type] = json;
         });
-      }
-    });
-  }
-  
-  polarTools.getFilesToBeConverted = function () {
-    
-  }
 
-  return polarTools;
+        if(Object.keys(jsonData).length == files.length) {
+          var resultXml = buildTcx(jsonData['training'], jsonData['gpx']);
+          fs.writeFile('./output/tcx.tcx', resultXml.end({ pretty: true, indent: '  ', newline: '\n' }), function(err) {
+            if(err) {
+              console.log(err);
+              return err;
+            }
+            console.log('File was saved.');
+            return "All ok";
+          });
+        }
+      });
+    },
+
+    getFilesToBeConverted : function () {
+      console.log('Reading polar files from folder: ' + POLAR_EXPORT_FOLDER);
+
+      var polarFiles = [];
+
+      var files = fs.readdirSync(POLAR_EXPORT_FOLDER);
+
+      for (var i=0; i< files.length; i++) {
+        var gpxFile = null;
+
+        if(path.extname(files[i]) === ".xml") {
+          var basename = path.basename(files[i]);
+          gpxFile = findCorrespondingGpxFile(files, basename);
+
+          if(gpxFile) {
+            polarFiles.push({name: basename, training: files[i], gpx: gpxFile});
+          }
+          else {
+            console.log('Could not find corresponding gpx file for ' + basename);
+          }
+        }
+      }
+
+      return polarFiles;
+    }
+
+  };
+
 });

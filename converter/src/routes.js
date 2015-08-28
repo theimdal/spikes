@@ -1,12 +1,12 @@
-spikeApp.config(function ($routeProvider) {
+polarToolsApp.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'tmpl/main.html',
             controller: 'mainController'
-        //
-        // }).when('/movie/:id', {
-        //    templateUrl: 'tmpl/movie.html',
-        //    controller: 'movieDetailsController'
+
+         }).when('/mssql', {
+            templateUrl: 'tmpl/mssql.html',
+            controller: 'mssqlController'
         //}).when('/bookings', {
         //    templateUrl: 'tmpl/bookings.html',
         //    controller: 'bookingDetailsController'

@@ -1,4 +1,18 @@
 <button type="button" class="btn btn-primary" ng-click="generateTcx()">Generate tcx</button>
-<div ng-show="result">
-    {{result}}
+<button type="button" class="btn btn-primary" ng-click="refreshFiles()">Refresh files</button>
+
+<div class="file-container">
+    <!--ng-init="refreshFiles();">-->
+
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Files</div>
+
+        <!-- Table -->
+        <table class="table">
+            <tr ng-repeat="file in files">
+                <td>{{file.name}}</td>
+            </tr>
+        </table>
+    </div>
 </div>

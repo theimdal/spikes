@@ -6,8 +6,8 @@
   "window": {
     "toolbar": true,
     "resizable": true,
-    "width": 1000,
-    "height": 600,
+    "width": 1600,
+    "height": 1200,
     "min_width": 600,
     "min_height": 400,
     "max_width": 2560,
